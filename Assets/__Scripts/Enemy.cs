@@ -11,11 +11,16 @@ public class Enemy : MonoBehaviour
     public float fireRate = 0.3f;
     public float health = 10;
     public int score = 100;
+    public float powerUpDropChance = 1f;
+    public ScoreCounter scoreCounter;
 
+    protected bool calledShipDestroyed = false;
     protected BoundsCheck bndCheck;
 
     void Awake() {
         bndCheck = GetComponent<BoundsCheck>();
+        GameObject scoreGO = GameObject.Find("ScoreCounter");
+        scoreCounter = scoreGO.GetComponent<ScoreCounter>();
     }
 
     public Vector3 pos {
@@ -47,6 +52,12 @@ public class Enemy : MonoBehaviour
             if (bndCheck.isOnScreen){
                 health -= Main.GET_WEAPON_DEFINITION(p.type).damageOnHit;
                 if (health<= 0) {
+                    if (!calledShipDestroyed) {
+                        calledShipDestroyed = true;
+                        Main.SHIP_DESTROYED(this);
+                        scoreCounter.score += 100;
+                        HighScore.TRY_SET_HIGH_SCORE(scoreCounter.score);
+                    }
                     Destroy(this.gameObject);
                 }
             }

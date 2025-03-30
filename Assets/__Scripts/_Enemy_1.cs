@@ -20,6 +20,8 @@ public class _Enemy_1 : Enemy
     {
         x0 = pos.x;
         birthTime = Time.time;
+        //GameObject scoreGO = GameObject.Find("ScoreCounter");
+        //scoreCounter = scoreGO.GetComponent<ScoreCounter>();
     }
 
     public override void Move() { //Override Move function of Enemy
